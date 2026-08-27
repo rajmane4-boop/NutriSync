@@ -1,8 +1,12 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# This matches the credentials in your docker-compose.yml
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgrespassword@localhost:5433/nutrisync_db"
+# Matches docker-compose.yml port 5433 by default, or allows custom DATABASE_URL override
+SQLALCHEMY_DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://postgres:postgrespassword@localhost:5433/nutrisync_db"
+)
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
