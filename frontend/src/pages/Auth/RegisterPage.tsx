@@ -36,7 +36,13 @@ export default function RegisterPage() {
             setSubmitted(true);
             setTimeout(() => { navigate('/onboarding'); }, 1000);
         } catch (err: any) {
-            setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+            if (!err.response) {
+                setError('Cannot connect to server (http://localhost:8000). Please make sure the FastAPI backend is running.');
+            } else if (err.response.status === 500) {
+                setError('Database connection error. Ensure PostgreSQL is running and run "alembic upgrade head" in the backend.');
+            } else {
+                setError(err.response?.data?.detail || 'Registration failed. Please try again.');
+            }
         } finally {
             setIsLoading(false);
         }
