@@ -81,11 +81,11 @@ export const FlowingLinesBackground: React.FC = () => {
 
         const isAccent = i === 3 || i === 8 || i === 12;
         const color = isAccent
-          ? 'rgba(203, 237, 62, 0.65)'
-          : `rgba(235, 245, 240, ${0.45 + (i % 3) * 0.18})`;
+          ? 'rgba(203, 237, 62, 0.25)'
+          : `rgba(235, 245, 240, ${0.10 + (i % 3) * 0.05})`;
         const railColor = isAccent
-          ? 'rgba(203, 237, 62, 0.09)'
-          : 'rgba(235, 245, 240, 0.055)';
+          ? 'rgba(203, 237, 62, 0.035)'
+          : 'rgba(235, 245, 240, 0.02)';
 
         newTracks.push({
           id: i,
@@ -190,14 +190,14 @@ export const FlowingLinesBackground: React.FC = () => {
 
           // Outer luminous halo
           ctx.beginPath();
-          ctx.arc(pos.x, pos.y, 4.5, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(203, 237, 62, 0.22)';
+          ctx.arc(pos.x, pos.y, 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(203, 237, 62, 0.14)';
           ctx.fill();
 
           // Bright center core
           ctx.beginPath();
-          ctx.arc(pos.x, pos.y, 2, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffffff';
+          ctx.arc(pos.x, pos.y, 1.6, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
           ctx.fill();
         }
       }

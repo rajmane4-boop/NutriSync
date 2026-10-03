@@ -26,6 +26,10 @@ export default function CheatMealTracker() {
   const [loading, setLoading] = useState<boolean>(true);
   const [actionMsg, setActionMsg] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string>('All');
+  const [selectedTemplateName, setSelectedTemplateName] = useState<string>('');
+  const [showTemplateGrid, setShowTemplateGrid] = useState<boolean>(false);
+  const [showScienceDetails, setShowScienceDetails] = useState<boolean>(false);
+  const [historyFilter, setHistoryFilter] = useState<string>('All');
 
   // Modal State
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -59,6 +63,9 @@ export default function CheatMealTracker() {
         fetchCheatMealsHistory(),
       ]);
       setTemplates(tplRes);
+      if (tplRes.length > 0) {
+        setSelectedTemplateName((prev) => prev || tplRes[0].name);
+      }
       setActivePlan(ovRes.current_active_plan || null);
       setStats({
         total_logged: ovRes.total_logged_all_time,
@@ -183,11 +190,21 @@ export default function CheatMealTracker() {
     }
   };
 
-  const categories = ['All', 'Fast Food', 'Italian', 'South Asian', 'Mexican', 'Asian', 'Comfort Food', 'Dessert', 'Bakery', 'Japanese'];
+  const templateCategories = Array.from(new Set(templates.map((t) => t.category)));
+  const currentTemplate = templates.find((t) => t.name === selectedTemplateName) || templates[0] || null;
+
+  const categories = ['All', ...templateCategories];
 
   const filteredTemplates = templates.filter((tpl) => {
     if (categoryFilter === 'All') return true;
     return tpl.category.toLowerCase() === categoryFilter.toLowerCase();
+  });
+
+  const filteredHistory = history.filter((meal) => {
+    if (historyFilter === 'All') return true;
+    const tagMatch = meal.feeling_tag?.toLowerCase().includes(historyFilter.toLowerCase());
+    const slotMatch = meal.meal_type.toLowerCase() === historyFilter.toLowerCase();
+    return tagMatch || slotMatch;
   });
 
   const feelings = ['Worth it 😋', 'Social event 🥂', 'Cravings satisfied 🍕', 'High energy ⚡', 'Cheat weekend 🎉'];
@@ -255,75 +272,61 @@ export default function CheatMealTracker() {
           </div>
         </header>
 
-        {/* Top HUD Telemetry Ribbon */}
-        <div className="dashboard-hud-ribbon">
-          <div className="hud-card">
-            <div className="hud-card-top">
-              <span className="hud-label">Logged Meals</span>
-              <span className="hud-pill volt">LIFETIME</span>
-            </div>
-            <div className="hud-metric">
+        {/* Top HUD Telemetry Ribbon (Streamlined, Compact Metrics) */}
+        <div className="cheat-hud-ribbon">
+          <div className="cheat-hud-cell">
+            <span className="cheat-hud-cell-label">Logged Meals</span>
+            <div className="cheat-hud-cell-val">
               <strong>{stats.total_logged}</strong>
+              <small>all-time</small>
+            </div>
+            <span className="cheat-hud-cell-sub">Tracked indulgences</span>
+          </div>
+
+          <div className="cheat-hud-cell">
+            <span className="cheat-hud-cell-label">This Month</span>
+            <div className="cheat-hud-cell-val">
+              <strong>{stats.logged_month}</strong>
               <small>meals</small>
             </div>
-            <div className="hud-sub">All-time tracked indulgences</div>
+            <span className="cheat-hud-cell-sub">Flexible athletic diet</span>
           </div>
 
-          <div className="hud-card">
-            <div className="hud-card-top">
-              <span className="hud-label">This Month</span>
-              <span className="hud-pill green">CALENDAR</span>
-            </div>
-            <div className="hud-metric">
-              <strong>{stats.logged_month}</strong>
-              <small>this month</small>
-            </div>
-            <div className="hud-sub">Healthy athletic flexibility</div>
-          </div>
-
-          <div className="hud-card">
-            <div className="hud-card-top">
-              <span className="hud-label">Active Strategy</span>
-              <span className={`hud-pill ${activePlan ? 'volt' : 'green'}`}>
-                {activePlan ? 'ACTIVE' : 'IDLE'}
-              </span>
-            </div>
-            <div className="hud-metric">
-              <strong style={{ fontSize: 18, textTransform: 'capitalize' }}>
+          <div className="cheat-hud-cell">
+            <span className="cheat-hud-cell-label">Active Strategy</span>
+            <div className="cheat-hud-cell-val">
+              <strong className="strategy-text">
                 {activePlan ? activePlan.strategy.replace('_', ' ') : 'Neutral'}
               </strong>
             </div>
-            <div className="hud-sub">
-              {activePlan ? `${activePlan.rebalance_days}-day recovery window` : 'No surplus to rebalance'}
-            </div>
+            <span className="cheat-hud-cell-sub">
+              {activePlan ? `${activePlan.rebalance_days}-day recovery window` : 'No active surplus'}
+            </span>
           </div>
 
-          <div className="hud-card">
-            <div className="hud-card-top">
-              <span className="hud-label">Daily Offset</span>
-              <span className="hud-pill volt">TARGET</span>
-            </div>
-            <div className="hud-metric">
-              <strong>
+          <div className="cheat-hud-cell">
+            <span className="cheat-hud-cell-label">Daily Offset</span>
+            <div className="cheat-hud-cell-val">
+              <strong style={{ color: activePlan ? '#cbed3e' : '#9cb2a3' }}>
                 {activePlan ? `${Math.round(activePlan.daily_calorie_offset)}` : '0'}
               </strong>
               <small>kcal/day</small>
             </div>
-            <div className="hud-sub">
-              {activePlan ? `+${activePlan.daily_extra_steps.toLocaleString()} daily steps` : 'On standard metabolic target'}
-            </div>
+            <span className="cheat-hud-cell-sub">
+              {activePlan ? `+${activePlan.daily_extra_steps.toLocaleString()} extra steps` : 'Standard metabolic target'}
+            </span>
           </div>
         </div>
 
         {/* ========================================================================= */}
-        {/* ACTIVE ADAPTIVE REBALANCE BANNER                          */}
+        {/* ACTIVE ADAPTIVE REBALANCE BANNER (STREAMLINED & STRUCTURED)               */}
         {/* ========================================================================= */}
         {activePlan ? (
           <div className="rebalance-active-banner">
             <div className="rebalance-banner-top">
               <div>
                 <span className="rebalance-banner-badge">
-                  <span>●</span> Active Adaptive Rebalance Plan in Progress
+                  <span>●</span> Active Rebalance Plan
                 </span>
                 <h3 className="rebalance-banner-h">
                   Rebalancing: {activePlan.meal_name} (+{Math.round(activePlan.surplus_calories)} kcal surplus)
@@ -339,7 +342,7 @@ export default function CheatMealTracker() {
               </button>
             </div>
 
-            {/* Target Breakdown Cards */}
+            {/* Target Breakdown Row */}
             <div className="rebalance-targets-grid">
               <div className="rebalance-target-box">
                 <span className="rebalance-target-lbl">Daily Meal Buffer</span>
@@ -355,7 +358,7 @@ export default function CheatMealTracker() {
                   +{activePlan.daily_extra_steps.toLocaleString()} steps / day
                 </span>
                 <span className="rebalance-target-sub">
-                  ~{Math.round(activePlan.daily_extra_active_burn_kcal)} kcal extra non-exercise burn
+                  ~{Math.round(activePlan.daily_extra_active_burn_kcal)} kcal extra active burn
                 </span>
               </div>
 
@@ -368,64 +371,140 @@ export default function CheatMealTracker() {
               </div>
             </div>
 
-            {/* Sports Science Explanation */}
-            {activePlan.explanation && (
-              <div className="rebalance-explanation-box">
-                <strong>Sports Science Rationale: </strong>
-                {activePlan.explanation}
-              </div>
-            )}
+            {/* Collapsible Sports Science Guidance */}
+            {(activePlan.explanation || activePlan.glycogen_tip) && (
+              <div className="rebalance-science-section">
+                <button
+                  type="button"
+                  onClick={() => setShowScienceDetails(!showScienceDetails)}
+                  className="rebalance-science-toggle"
+                >
+                  <span>💡 Sports Science Guidance &amp; Glycogen Window</span>
+                  <span className="toggle-arrow">{showScienceDetails ? '▴ Hide' : '▾ View Details'}</span>
+                </button>
 
-            {/* Glycogen PR Tip */}
-            {activePlan.glycogen_tip && (
-              <div className="rebalance-glycogen-box">
-                {activePlan.glycogen_tip}
+                {showScienceDetails && (
+                  <div className="rebalance-science-content">
+                    {activePlan.explanation && (
+                      <div className="rebalance-explanation-box">
+                        <strong>Rationale: </strong>
+                        {activePlan.explanation}
+                      </div>
+                    )}
+                    {activePlan.glycogen_tip && (
+                      <div className="rebalance-glycogen-box">
+                        {activePlan.glycogen_tip}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
         ) : (
-          <div className="pantry-empty-card" style={{ padding: '32px 24px' }}>
-            <div className="pantry-empty-icon">⚖️</div>
-            <h3 className="pantry-empty-title">All Metabolic Baselines Fully Balanced</h3>
-            <p className="pantry-empty-desc">
-              You currently have no active caloric surpluses. Whenever you enjoy a feast, dinner party, or high-calorie meal,
-              log it below to generate a gentle multi-day compensation protocol!
-            </p>
+          <div className="pantry-empty-card" style={{ padding: '24px 20px', flexDirection: 'row', justifyContent: 'center' }}>
+            <span style={{ fontSize: 24 }}>⚖️</span>
+            <div>
+              <strong style={{ color: '#f1f7ee', fontSize: 14 }}>All Metabolic Baselines Fully Balanced. </strong>
+              <span style={{ color: '#9cb2a3', fontSize: 13 }}>
+                Whenever you enjoy a feast, dinner party, or high-calorie meal, log it below to activate a gentle rebalance protocol.
+              </span>
+            </div>
           </div>
         )}
 
         {/* ========================================================================= */}
-        {/* QUICK-LOG INDULGENCE STAPLES SHELF                                        */}
+        {/* QUICK-LOG INDULGENCE DROPDOWN BAR (MINIMAL, STRUCTURED)                   */}
         {/* ========================================================================= */}
-        <div className="cheat-shelf-box">
-          <div className="cheat-shelf-header">
-            <div className="cheat-shelf-title">
-              <span>🍕</span>
-              <span>1-Tap Popular Indulgence Templates</span>
+        <div className="pantry-quick-stock-bar">
+          <div className="quick-stock-left">
+            <span className="quick-stock-icon">🍕</span>
+            <div>
+              <h3 className="quick-stock-title">Quick Log Popular Indulgence</h3>
+              <span className="quick-stock-sub">
+                Select a template from the dropdown to auto-populate calories, macros, and configure rebalance window
+              </span>
             </div>
-            <span className="staples-box-sub">
-              Select an item to auto-populate calories, macros, and configure your rebalance window
-            </span>
           </div>
 
-          {/* Category Chips */}
-          <div className="staples-cat-chips">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategoryFilter(cat)}
-                className={`staples-cat-btn ${categoryFilter === cat ? 'active' : ''}`}
+          <div className="quick-stock-actions">
+            {/* Structured Template Dropdown */}
+            <div className="dropdown-action-cluster">
+              <select
+                value={selectedTemplateName}
+                onChange={(e) => setSelectedTemplateName(e.target.value)}
+                className="pantry-staples-select"
               >
-                {cat}
-              </button>
-            ))}
-          </div>
+                {templateCategories.map((cat) => (
+                  <optgroup key={cat} label={`── ${cat} ──`}>
+                    {templates
+                      .filter((t) => t.category === cat)
+                      .map((tpl) => (
+                        <option key={tpl.name} value={tpl.name}>
+                          {tpl.icon} {tpl.name} ({Math.round(tpl.calories)} kcal)
+                        </option>
+                      ))}
+                  </optgroup>
+                ))}
+              </select>
 
-          {/* Grid of Templates */}
-          <div className="cheat-grid">
-            {filteredTemplates.map((tpl) => (
-              <div key={tpl.name} className="cheat-card">
-                <div>
+              {/* Macro Preview Badges */}
+              {currentTemplate && (
+                <div className="cheat-macro-preview-chips">
+                  <span className="macro-chip cals">{Math.round(currentTemplate.calories)} kcal</span>
+                  <span className="macro-chip protein">{currentTemplate.protein_g}g Pro</span>
+                  <span className="macro-chip carbs">{currentTemplate.carbs_g}g Carb</span>
+                  <span className="macro-chip fats">{currentTemplate.fats_g}g Fat</span>
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => currentTemplate && handleSelectTemplate(currentTemplate)}
+                className="pantry-add-staple-btn"
+              >
+                + Quick Log
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleOpenCustom}
+              className="pantry-ghost-action-btn"
+            >
+              + Custom Meal
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setShowTemplateGrid(!showTemplateGrid)}
+              className="pantry-toggle-grid-btn"
+            >
+              {showTemplateGrid ? '▴ Hide Cards' : '▾ Browse Cards'}
+            </button>
+          </div>
+        </div>
+
+        {/* Optional Collapsible Visual Template Grid */}
+        {showTemplateGrid && (
+          <div className="staples-collapsible-drawer">
+            {/* Clean Spaced Category Chips */}
+            <div className="cheat-cat-chips-row">
+              {['All', ...templateCategories].map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setCategoryFilter(cat)}
+                  className={`cheat-cat-pill-btn ${categoryFilter === cat ? 'active' : ''}`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            <div className="cheat-grid">
+              {filteredTemplates.map((tpl) => (
+                <div key={tpl.name} className="cheat-card">
                   <div className="cheat-card-top">
                     <div className="cheat-icon-name">
                       <span className="cheat-card-icon">{tpl.icon}</span>
@@ -436,109 +515,136 @@ export default function CheatMealTracker() {
                     </div>
                   </div>
 
-                  <p className="cheat-card-desc" style={{ marginTop: 10 }}>
+                  <p className="cheat-card-desc" style={{ marginTop: 8 }}>
                     {tpl.description}
                   </p>
-                </div>
 
-                <div>
-                  {/* Macros breakdown */}
-                  <div className="cheat-card-macros">
+                  <div className="cheat-card-macros" style={{ marginTop: 10 }}>
                     <div className="cheat-macro-item">
                       <span className="cheat-macro-lbl">Energy</span>
                       <span className="cheat-macro-val">{Math.round(tpl.calories)}<small style={{ fontSize: 9 }}>kcal</small></span>
                     </div>
                     <div className="cheat-macro-item">
                       <span className="cheat-macro-lbl">Protein</span>
-                      <span className="cheat-macro-val" style={{ color: '#15803d' }}>{tpl.protein_g}g</span>
+                      <span className="cheat-macro-val" style={{ color: '#5ae4aa' }}>{tpl.protein_g}g</span>
                     </div>
                     <div className="cheat-macro-item">
                       <span className="cheat-macro-lbl">Carbs</span>
-                      <span className="cheat-macro-val" style={{ color: '#0284c7' }}>{tpl.carbs_g}g</span>
+                      <span className="cheat-macro-val" style={{ color: '#38bdf8' }}>{tpl.carbs_g}g</span>
                     </div>
                     <div className="cheat-macro-item">
                       <span className="cheat-macro-lbl">Fats</span>
-                      <span className="cheat-macro-val" style={{ color: '#d97706' }}>{tpl.fats_g}g</span>
+                      <span className="cheat-macro-val" style={{ color: '#fb923c' }}>{tpl.fats_g}g</span>
                     </div>
                   </div>
 
                   <button
                     onClick={() => handleSelectTemplate(tpl)}
                     className="cheat-log-btn"
-                    style={{ width: '100%', marginTop: 12 }}
+                    style={{ width: '100%', marginTop: 10 }}
                   >
                     <span>+</span>
                     <span>Quick-Log This Meal</span>
                   </button>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ========================================================================= */}
-        {/* LOGGED INDULGENCE MEALS ARCHIVE                                           */}
-        {/* ========================================================================= */}
-        <div className="cheat-shelf-box">
-          <div className="cheat-shelf-header">
-            <div className="cheat-shelf-title">
-              <span>📜</span>
-              <span>Recent Indulgence Meals History ({history.length})</span>
+              ))}
             </div>
-            <span className="staples-box-sub">
-              Your logged meals and emotional context
-            </span>
+          </div>
+        )}
+
+        {/* ========================================================================= */}
+        {/* LOGGED INDULGENCE MEALS ARCHIVE (STRUCTURED TABLE)                         */}
+        {/* ========================================================================= */}
+        <div className="cheat-history-section">
+          <div className="pantry-inventory-toolbar">
+            <div className="pantry-toolbar-meta">
+              <h3 className="inventory-section-title">
+                Indulgence History <span className="item-count-badge">{filteredHistory.length} logged</span>
+              </h3>
+              <span className="inventory-section-sub">
+                Tracked off-plan meals with emotional context &amp; caloric profiles
+              </span>
+            </div>
+
+            <div className="pantry-toolbar-controls">
+              <div className="pantry-dropdown-cluster">
+                <label className="dropdown-field-label">Filter:</label>
+                <select
+                  value={historyFilter}
+                  onChange={(e) => setHistoryFilter(e.target.value)}
+                  className="pantry-category-select"
+                >
+                  <option value="All">All History ({history.length})</option>
+                  <option value="Dinner">Dinner</option>
+                  <option value="Lunch">Lunch</option>
+                  <option value="Late Night">Late Night</option>
+                  <option value="Worth it">Worth it 😋</option>
+                  <option value="Social">Social 🥂</option>
+                </select>
+              </div>
+            </div>
           </div>
 
-          {history.length === 0 ? (
-            <div className="pantry-empty-card" style={{ padding: '28px 16px' }}>
+          {filteredHistory.length === 0 ? (
+            <div className="pantry-empty-card" style={{ padding: '32px 20px' }}>
+              <div className="pantry-empty-icon">🍽️</div>
               <p className="pantry-empty-desc">
-                No indulgence meals logged yet. When you celebrate or dine out, track it here with zero guilt.
+                {history.length === 0
+                  ? 'No indulgence meals logged yet. When you celebrate or dine out, track it here with zero guilt.'
+                  : 'No meal records match the selected filter.'}
               </p>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {history.map((meal) => (
-                <div key={meal.id} className="cheat-history-card">
-                  <div className="cheat-history-left">
-                    <div className="cheat-history-icon">🍽️</div>
-                    <div>
-                      <h4 className="cheat-history-title">{meal.name}</h4>
-                      <div className="cheat-history-meta">
-                        <span>{new Date(meal.consumed_at).toLocaleDateString()}</span>
-                        <span>&bull;</span>
-                        <span>{meal.meal_type}</span>
-                        {meal.feeling_tag && (
-                          <span className="cheat-feeling-badge">{meal.feeling_tag}</span>
-                        )}
-                        {meal.notes && (
-                          <>
-                            <span>&bull;</span>
-                            <span style={{ fontStyle: 'italic', color: '#88998d' }}>"{meal.notes}"</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+            <div className="pantry-table-container">
+              <div className="pantry-table-header cheat-history-table-header">
+                <div className="pth-col">Date &bull; Slot</div>
+                <div className="pth-col">Meal &bull; Context</div>
+                <div className="pth-col">Calories &bull; Macros</div>
+                <div className="pth-col pth-action">Remove</div>
+              </div>
 
-                  <div className="cheat-history-right">
-                    <div className="cheat-history-cals">
-                      <span>{Math.round(meal.estimated_calories)} kcal</span>
-                      <div style={{ fontSize: 11, fontWeight: 500, color: '#6a7e71' }}>
-                        {meal.protein_g}g P &bull; {meal.carbs_g}g C &bull; {meal.fats_g}g F
-                      </div>
+              <div className="pantry-table-rows">
+                {filteredHistory.map((meal) => (
+                  <div key={meal.id} className="pantry-table-row cheat-history-table-row">
+                    <div className="ptr-col" style={{ gap: 8 }}>
+                      <span className="pantry-cat-pill">{meal.meal_type}</span>
+                      <span style={{ font: '600 12px "DM Mono", monospace', color: '#9cb2a3' }}>
+                        {new Date(meal.consumed_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                      </span>
                     </div>
 
-                    <button
-                      onClick={() => handleDeleteMeal(meal.id)}
-                      className="pantry-del-btn"
-                      title="Remove record"
-                    >
-                      ✕
-                    </button>
+                    <div className="ptr-col ptr-item" style={{ gap: 10 }}>
+                      <strong className="ptr-item-name">{meal.name}</strong>
+                      {meal.feeling_tag && (
+                        <span className="cheat-feeling-badge">{meal.feeling_tag}</span>
+                      )}
+                      {meal.notes && (
+                        <span style={{ fontSize: 12, fontStyle: 'italic', color: '#8da593' }}>
+                          "{meal.notes}"
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="ptr-col ptr-macros">
+                      <span className="macro-chip cals">{Math.round(meal.estimated_calories)} kcal</span>
+                      <span className="macro-chip protein">{meal.protein_g}g Pro</span>
+                      <span className="macro-chip carbs">{meal.carbs_g}g Carb</span>
+                      <span className="macro-chip fats">{meal.fats_g}g Fat</span>
+                    </div>
+
+                    <div className="ptr-col ptr-action">
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteMeal(meal.id)}
+                        className="pantry-row-del-btn"
+                        title="Delete meal record"
+                      >
+                        ✕
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
         </div>

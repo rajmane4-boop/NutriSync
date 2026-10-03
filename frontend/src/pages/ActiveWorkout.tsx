@@ -433,10 +433,15 @@ export default function ActiveWorkout() {
                 </button>
                 <button
                   type="button"
-                  className="az-start-btn"
-                  style={{ background: 'transparent', border: '1px solid #d8e2d7', color: '#14221b' }}
+                  className="az-browse-btn"
                   onClick={() => setPickerOpen(true)}
                 >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                  </svg>
                   Browse Catalog
                 </button>
               </div>
@@ -701,9 +706,9 @@ export default function ActiveWorkout() {
                       type="button"
                       onClick={() => setRecSplit(s.key)}
                       style={{
-                        background: recSplit === s.key ? '#132720' : '#fbfcf9',
-                        color: recSplit === s.key ? '#cbed3e' : '#14221b',
-                        border: `1px solid ${recSplit === s.key ? '#132720' : '#d8e2d7'}`,
+                        background: recSplit === s.key ? 'rgba(203, 237, 62, 0.16)' : 'rgba(255, 255, 255, 0.05)',
+                        color: recSplit === s.key ? '#cbed3e' : '#f1f7ee',
+                        border: `1px solid ${recSplit === s.key ? '#cbed3e' : 'rgba(255, 255, 255, 0.12)'}`,
                         borderRadius: 8,
                         padding: '8px 10px',
                         textAlign: 'left',
@@ -720,39 +725,39 @@ export default function ActiveWorkout() {
 
               {/* Routine Preview */}
               {recLoading ? (
-                <div style={{ padding: 32, textAlign: 'center', color: '#55675c', font: '13px "DM Mono", monospace' }}>
+                <div style={{ padding: 32, textAlign: 'center', color: '#9cb2a3', font: '13px "DM Mono", monospace' }}>
                   Calibrating biometric routine...
                 </div>
               ) : previewRoutine ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                   {/* Routine Header Card */}
-                  <div style={{ background: '#f4f7f2', border: '1px solid #d8e2d7', borderRadius: 8, padding: '12px 16px' }}>
+                  <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: 8, padding: '12px 16px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
-                        <h4 style={{ margin: 0, font: '600 15px Manrope, sans-serif', color: '#14221b' }}>
+                        <h4 style={{ margin: 0, font: '600 15px Manrope, sans-serif', color: '#ffffff' }}>
                           {previewRoutine.routine_title}
                         </h4>
-                        <span style={{ font: '11px "DM Mono", monospace', color: '#2d6a4f', display: 'block', marginTop: 2 }}>
+                        <span style={{ font: '11px "DM Mono", monospace', color: '#cbed3e', display: 'block', marginTop: 2 }}>
                           {previewRoutine.goal_alignment_badge}
                         </span>
                       </div>
                       <div style={{ textAlign: 'right' }}>
-                        <span style={{ font: '700 14px "DM Mono", monospace', color: '#14221b', display: 'block' }}>
+                        <span style={{ font: '700 14px "DM Mono", monospace', color: '#cbed3e', display: 'block' }}>
                           ~{previewRoutine.estimated_calories_burned} kcal
                         </span>
-                        <span style={{ font: '11px "DM Mono", monospace', color: '#71887b' }}>
+                        <span style={{ font: '11px "DM Mono", monospace', color: '#9cb2a3' }}>
                           ⏱️ {previewRoutine.estimated_duration_min} min
                         </span>
                       </div>
                     </div>
-                    <p style={{ margin: '8px 0 0 0', font: '12px Manrope, sans-serif', color: '#55675c', lineHeight: 1.4 }}>
+                    <p style={{ margin: '8px 0 0 0', font: '12px Manrope, sans-serif', color: '#9cb2a3', lineHeight: 1.4 }}>
                       💡 {previewRoutine.coaching_summary}
                     </p>
                   </div>
 
                   {/* Exercises List */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <span style={{ font: '700 10px "DM Mono", monospace', color: '#55675c', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <span style={{ font: '700 10px "DM Mono", monospace', color: '#8fa597', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       Curated Movements &amp; Starting Weights
                     </span>
                     {previewRoutine.exercises.map((ex, i) => (
@@ -762,25 +767,25 @@ export default function ActiveWorkout() {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          background: '#ffffff',
-                          border: '1px solid #edf2eb',
+                          background: 'rgba(255, 255, 255, 0.03)',
+                          border: '1px solid rgba(255, 255, 255, 0.06)',
                           borderRadius: 6,
                           padding: '8px 12px',
                         }}
                       >
                         <div>
-                          <strong style={{ fontSize: 13, color: '#14221b' }}>{i + 1}. {ex.name}</strong>
-                          <div style={{ fontSize: 11, color: '#71887b', display: 'flex', gap: 8, marginTop: 2 }}>
+                          <strong style={{ fontSize: 13, color: '#f1f7ee' }}>{i + 1}. {ex.name}</strong>
+                          <div style={{ fontSize: 11, color: '#8fa597', display: 'flex', gap: 8, marginTop: 2 }}>
                             <span>{ex.primary_muscle}</span>
                             <span>&bull;</span>
                             <span>{ex.equipment}</span>
                           </div>
                         </div>
                         <div style={{ textAlign: 'right' }}>
-                          <span style={{ font: '700 12px "DM Mono", monospace', color: '#132720', display: 'block' }}>
+                          <span style={{ font: '700 12px "DM Mono", monospace', color: '#ffffff', display: 'block' }}>
                             {ex.target_sets} sets &times; {ex.target_reps} reps
                           </span>
-                          <span style={{ fontSize: 11, color: '#2d6a4f', fontFamily: 'DM Mono, monospace' }}>
+                          <span style={{ fontSize: 11, color: '#cbed3e', fontFamily: 'DM Mono, monospace' }}>
                             {ex.suggested_weight_kg > 0 ? `@ ${ex.suggested_weight_kg} kg` : 'Bodyweight'}
                           </span>
                         </div>

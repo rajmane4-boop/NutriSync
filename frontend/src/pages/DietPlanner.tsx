@@ -59,6 +59,9 @@ export default function DietPlanner() {
   const [actionMsg, setActionMsg] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [staplesFilter, setStaplesFilter] = useState<string>('All');
+  const [selectedStapleName, setSelectedStapleName] = useState<string>(POPULAR_STAPLES[0].name);
+  const [showStaplesGrid, setShowStaplesGrid] = useState<boolean>(false);
+  const [viewMode, setViewMode] = useState<'list' | 'cards'>('list');
 
   // Custom Item Modal / Form State
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
@@ -506,89 +509,234 @@ export default function DietPlanner() {
         {/* ========================================================================= */}
         {activeTab === 'pantry' && (
           <div className="diet-section">
-            {/* Quick-Add Athletic Staples Shelf */}
-            <div className="staples-box">
-              <div className="staples-box-header">
-                <div className="staples-box-title">
-                  <span>⚡</span>
-                  <span>1-Tap Athletic Staples &bull; Quick Stock</span>
+            {/* ── 1. Compact Quick-Stock Dropdown Bar ── */}
+            <div className="pantry-quick-stock-bar">
+              <div className="quick-stock-left">
+                <span className="quick-stock-icon">⚡</span>
+                <div>
+                  <h3 className="quick-stock-title">Quick Stock Athletic Staples</h3>
+                  <span className="quick-stock-sub">Select essential staples from the dropdown to instantly stock your pantry</span>
                 </div>
-                <span className="staples-box-sub">
-                  Click any staple to immediately add standard portion into your pantry inventory
+              </div>
+
+              <div className="quick-stock-actions">
+                {/* Structured Staples Dropdown List */}
+                <div className="dropdown-action-cluster">
+                  <select
+                    value={selectedStapleName}
+                    onChange={(e) => setSelectedStapleName(e.target.value)}
+                    className="pantry-staples-select"
+                  >
+                    {categories.filter(c => c !== 'All').map(cat => (
+                      <optgroup key={cat} label={`── ${cat} ──`}>
+                        {POPULAR_STAPLES.filter(s => s.category === cat).map(staple => (
+                          <option key={staple.name} value={staple.name}>
+                            {staple.icon} {staple.name} (+{staple.quantity} {staple.unit})
+                          </option>
+                        ))}
+                      </optgroup>
+                    ))}
+                  </select>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const staple = POPULAR_STAPLES.find(s => s.name === selectedStapleName);
+                      if (staple) handleQuickAdd(staple);
+                    }}
+                    className="pantry-add-staple-btn"
+                  >
+                    + Stock Item
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowAddModal(true)}
+                  className="pantry-ghost-action-btn"
+                >
+                  + Custom Item
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleStockAthleteKit}
+                  className="pantry-ghost-action-btn kit"
+                  title="Stock Eggs, Chicken, Oats, Rice, Milk, Spinach in 1 click"
+                >
+                  ⚡ Athlete Starter Kit
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowStaplesGrid(!showStaplesGrid)}
+                  className="pantry-toggle-grid-btn"
+                >
+                  {showStaplesGrid ? '▴ Hide Grid' : '▾ Grid View'}
+                </button>
+              </div>
+            </div>
+
+            {/* Optional Collapsible Visual Staples Grid */}
+            {showStaplesGrid && (
+              <div className="staples-collapsible-drawer">
+                <div className="staples-grid">
+                  {POPULAR_STAPLES.map((staple) => (
+                    <div
+                      key={staple.name}
+                      onClick={() => handleQuickAdd(staple)}
+                      className="staple-card"
+                      title={`Add ${staple.quantity}${staple.unit} of ${staple.name}`}
+                    >
+                      <div className="staple-left">
+                        <span className="staple-icon">{staple.icon}</span>
+                        <div className="staple-info">
+                          <span className="staple-name">{staple.name}</span>
+                          <span className="staple-qty">+{staple.quantity} {staple.unit}</span>
+                        </div>
+                      </div>
+                      <div className="staple-add-action">+</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── 2. Structured Pantry Toolbar with Category Dropdown Filter ── */}
+            <div className="pantry-inventory-toolbar">
+              <div className="pantry-toolbar-meta">
+                <h3 className="inventory-section-title">
+                  Stocked Ingredients <span className="item-count-badge">{filteredPantry.length} items</span>
+                </h3>
+                <span className="inventory-section-sub">
+                  Total Energy: <strong style={{ color: '#cbed3e' }}>{Math.round(totalCalories)} kcal</strong> &bull; Protein: <strong style={{ color: '#5ae4aa' }}>{Math.round(totalProtein)}g</strong>
                 </span>
               </div>
 
-              {/* Staples Category Filter */}
-              <div className="staples-cat-chips">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setStaplesFilter(cat)}
-                    className={`staples-cat-btn ${staplesFilter === cat ? 'active' : ''}`}
+              <div className="pantry-toolbar-controls">
+                {/* Category Filter Dropdown List */}
+                <div className="pantry-dropdown-cluster">
+                  <label className="dropdown-field-label">Filter Category:</label>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="pantry-category-select"
                   >
-                    {cat}
-                  </button>
-                ))}
-              </div>
+                    {categories.map((cat) => {
+                      const count = cat === 'All' ? pantry.length : pantry.filter(p => p.category.toLowerCase() === cat.toLowerCase()).length;
+                      return (
+                        <option key={cat} value={cat}>
+                          {cat} ({count})
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
 
-              {/* Staples Grid */}
-              <div className="staples-grid">
-                {filteredStaples.map((staple) => (
-                  <div
-                    key={staple.name}
-                    onClick={() => handleQuickAdd(staple)}
-                    className="staple-card"
-                    title={`Add ${staple.quantity}${staple.unit} of ${staple.name}`}
+                {/* View Mode Toggle */}
+                <div className="pantry-view-mode-toggle">
+                  <button
+                    type="button"
+                    className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+                    onClick={() => setViewMode('list')}
+                    title="Structured List View"
                   >
-                    <div className="staple-left">
-                      <span className="staple-icon">{staple.icon}</span>
-                      <div className="staple-info">
-                        <span className="staple-name">{staple.name}</span>
-                        <span className="staple-qty">+{staple.quantity} {staple.unit}</span>
-                      </div>
-                    </div>
-                    <div className="staple-add-action">+</div>
-                  </div>
-                ))}
+                    ☰ List
+                  </button>
+                  <button
+                    type="button"
+                    className={`view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
+                    onClick={() => setViewMode('cards')}
+                    title="Grid Cards View"
+                  >
+                    ⊞ Cards
+                  </button>
+                </div>
+
+                {pantry.length > 0 && (
+                  <button onClick={handleClearPantry} className="pantry-clear-btn">
+                    Clear All
+                  </button>
+                )}
               </div>
             </div>
 
-            {/* Pantry List Toolbar */}
-            <div className="pantry-toolbar">
-              <div className="pantry-cat-filters">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`pantry-cat-btn ${selectedCategory === cat ? 'active' : ''}`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-
-              {pantry.length > 0 && (
-                <button onClick={handleClearPantry} className="pantry-clear-btn">
-                  Clear All Pantry Items
-                </button>
-              )}
-            </div>
-
-            {/* Pantry Items Grid or Clean Empty State */}
+            {/* ── 3. Structured Pantry Inventory Display ── */}
             {filteredPantry.length === 0 ? (
               <div className="pantry-empty-card">
                 <div className="pantry-empty-icon">🥫</div>
-                <h3 className="pantry-empty-title">Your Kitchen Pantry is Ready</h3>
+                <h3 className="pantry-empty-title">Your Kitchen Pantry is Empty</h3>
                 <p className="pantry-empty-desc">
-                  You haven't added any ingredients yet. Tap individual staples from the shelf above,
-                  or load a recommended Athlete Starter Kit with a single click.
+                  Select ingredients from the Quick Stock dropdown above, or load the Athlete Starter Kit with a single click.
                 </p>
                 <button onClick={handleStockAthleteKit} className="pantry-kit-btn">
                   <span>⚡</span>
                   <span>Quick-Stock Essential Athlete Kit</span>
                 </button>
               </div>
+            ) : viewMode === 'list' ? (
+              /* Structured Table / List View */
+              <div className="pantry-table-container">
+                <div className="pantry-table-header">
+                  <div className="pth-col pth-item">Ingredient &bull; Category</div>
+                  <div className="pth-col pth-macros">Macronutrient Profile</div>
+                  <div className="pth-col pth-qty">Quantity on Hand</div>
+                  <div className="pth-col pth-action">Remove</div>
+                </div>
+
+                <div className="pantry-table-rows">
+                  {filteredPantry.map((item) => (
+                    <div key={item.id} className="pantry-table-row">
+                      <div className="ptr-col ptr-item">
+                        <span className="pantry-cat-pill">{item.category}</span>
+                        <strong className="ptr-item-name">{item.name}</strong>
+                      </div>
+
+                      <div className="ptr-col ptr-macros">
+                        <span className="macro-chip cals">{Math.round(item.calories)} kcal</span>
+                        <span className="macro-chip protein">{item.protein_g}g Pro</span>
+                        <span className="macro-chip carbs">{item.carbs_g}g Carb</span>
+                        <span className="macro-chip fats">{item.fats_g}g Fat</span>
+                      </div>
+
+                      <div className="ptr-col ptr-qty">
+                        <div className="pantry-table-stepper">
+                          <button
+                            type="button"
+                            onClick={() => handleUpdateQty(item, item.unit === 'pcs' || item.unit === 'slices' ? -1 : -50)}
+                            className="pantry-stepper-btn"
+                          >
+                            &minus;
+                          </button>
+                          <span className="pantry-stepper-val">
+                            {item.quantity} {item.unit}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleUpdateQty(item, item.unit === 'pcs' || item.unit === 'slices' ? 1 : 50)}
+                            className="pantry-stepper-btn"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="ptr-col ptr-action">
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePantry(item.id)}
+                          className="pantry-row-del-btn"
+                          title="Delete from pantry"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ) : (
+              /* Compact Cards View */
               <div className="pantry-grid">
                 {filteredPantry.map((item) => (
                   <div key={item.id} className="pantry-card">
@@ -605,7 +753,6 @@ export default function DietPlanner() {
                       </div>
                       <h4 className="pantry-card-title">{item.name}</h4>
 
-                      {/* Nutrient Breakdown Strip */}
                       <div className="pantry-macro-strip">
                         <div className="pantry-macro-cell">
                           <span className="pantry-macro-lbl">Energy</span>
@@ -626,7 +773,6 @@ export default function DietPlanner() {
                       </div>
                     </div>
 
-                    {/* Stepper Footer */}
                     <div className="pantry-card-footer">
                       <span className="pantry-qty-lbl">On hand:</span>
                       <div className="pantry-qty-ctrls">
