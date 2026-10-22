@@ -319,7 +319,7 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
                   <span className="legend-dot" style={{ background: '#cbed3e' }} /> Tonnage Lifted
                 </span>
               </div>
-              <div style={{ width: '100%', height: 320 }}>
+              <div className="chart-canvas-box" style={{ width: '100%', height: 320 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
                     data={stats!.volume_over_time}
@@ -375,7 +375,7 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
                   <span className="legend-dot" style={{ background: '#5ae4aa' }} /> Completed Workouts
                 </span>
               </div>
-              <div style={{ width: '100%', height: 320 }}>
+              <div className="chart-canvas-box" style={{ width: '100%', height: 320 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={stats!.weekly_stats}
@@ -428,7 +428,7 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
                   <span className="legend-dot" style={{ background: '#f59e0b' }} /> Calories Burned
                 </span>
               </div>
-              <div style={{ width: '100%', height: 320 }}>
+              <div className="chart-canvas-box" style={{ width: '100%', height: 320 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart
                     data={stats!.calories_over_time}
@@ -478,8 +478,8 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
           {/* TAB 4: BIOMETRICS & WEIGHT TRAJECTORY */}
           {activeTab === 'biometrics' && (
             <div className="chart-wrapper">
-              <div className="chart-meta" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div className="chart-meta chart-meta-biometrics">
+                <div className="chart-legend-wrap" style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                   <span className="chart-badge">WEIGHT TRAJECTORY VS GOAL TARGET</span>
                   <span className="chart-legend">
                     <span className="legend-dot" style={{ background: '#cbed3e' }} /> Measured Weight
@@ -489,6 +489,7 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
                 <button
                   type="button"
                   onClick={() => setShowLogModal(true)}
+                  className="chart-log-btn"
                   style={{
                     background: '#cbed3e',
                     color: '#132720',
@@ -506,7 +507,7 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
                 </button>
               </div>
 
-              <div style={{ width: '100%', height: 320 }}>
+              <div className="chart-canvas-box" style={{ width: '100%', height: 320 }}>
                 {biometrics && biometrics.trajectory_points.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart
@@ -567,6 +568,7 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
                     {biometrics.logs.slice(-5).reverse().map((log) => (
                       <div
                         key={log.id}
+                        className="weigh-in-log-item"
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -577,7 +579,7 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
                           padding: '10px 14px',
                         }}
                       >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                        <div className="weigh-in-log-data" style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
                           <span style={{ font: '700 15px "DM Mono", monospace', color: '#cbed3e' }}>
                             {log.weight_kg} kg
                           </span>
@@ -597,7 +599,7 @@ export default function ProgressCharts({ stats, loading, onWeightLogged }: Progr
                             </span>
                           )}
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div className="weigh-in-log-meta" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                           <span style={{ font: '11px "DM Mono", monospace', color: '#687d72' }}>
                             {new Date(log.logged_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                           </span>

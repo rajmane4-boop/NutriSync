@@ -6947,25 +6947,31 @@ input[type="text"] {
   .diet-nav,
   .cheat-nav,
   .history-nav {
-    padding: 10px 16px !important;
-    gap: 10px;
+    padding: 10px 14px !important;
+    gap: 8px !important;
   }
 
   .nav-brand {
-    gap: 10px;
+    gap: 8px !important;
+  }
+
+  .nav-live-indicator {
+    margin-left: 0 !important;
+    padding: 2px 6px !important;
+    font-size: 9px !important;
   }
 
   .nav-user-actions {
-    gap: 8px;
+    gap: 6px !important;
   }
 
   .nav-ghost-btn {
-    padding: 5px 10px !important;
+    padding: 5px 8px !important;
     font-size: 11px !important;
   }
 
   .nav-logout-btn {
-    padding: 5px 10px !important;
+    padding: 5px 8px !important;
     font-size: 11px !important;
   }
 
@@ -6979,30 +6985,62 @@ input[type="text"] {
 
   /* --- Welcome Banners & Header Inputs --- */
   .dashboard-welcome-bar {
-    flex-direction: column;
+    flex-direction: column !important;
     align-items: stretch !important;
-    gap: 14px;
-    margin-bottom: 18px;
+    gap: 12px !important;
+    margin-bottom: 16px !important;
   }
 
   .dashboard-welcome-bar h1,
   .diet-header-block h1,
   .cheat-header-block h1,
   .history-header h1 {
-    font-size: 26px !important;
+    font-size: 24px !important;
     line-height: 1.2 !important;
   }
 
   .dashboard-welcome-bar .intro,
   .diet-header-block .intro,
   .cheat-header-block .intro {
-    font-size: 13px !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
   }
 
   .welcome-actions,
   .hero-cta-btn {
     width: 100% !important;
     justify-content: center !important;
+  }
+
+  .welcome-status-chips {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    width: 100% !important;
+    margin-top: 4px;
+  }
+
+  .status-chip {
+    padding: 8px 6px !important;
+    text-align: center !important;
+    align-items: center !important;
+    min-width: 0 !important;
+    border-radius: 6px !important;
+  }
+
+  .status-chip-label {
+    font-size: 9px !important;
+    margin-bottom: 2px !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .status-chip-val {
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+    font-weight: 700 !important;
   }
 
   /* --- HUD Ribbons on Mobile --- */
@@ -7014,14 +7052,48 @@ input[type="text"] {
 
   .hud-card {
     padding: 12px 14px !important;
+    border-radius: 8px !important;
+  }
+
+  .hud-card-top {
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    margin-bottom: 6px !important;
+    align-items: center !important;
+  }
+
+  .hud-label {
+    font-size: 9px !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .hud-action-pill,
+  .hud-pill {
+    font-size: 9px !important;
+    padding: 2px 6px !important;
+  }
+
+  .hud-metric {
+    display: flex !important;
+    align-items: baseline !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
   }
 
   .hud-metric strong {
     font-size: 20px !important;
   }
 
+  .hud-target-badge {
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+    white-space: nowrap !important;
+  }
+
   .hud-sub {
-    font-size: 11px !important;
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+    color: #8fa597 !important;
   }
 
   /* --- 2-Column Grids Collapse Gracefully --- */
@@ -7030,53 +7102,418 @@ input[type="text"] {
     gap: 18px !important;
   }
 
-  .macro-dashboard-grid {
-    grid-template-columns: 1fr !important;
-    gap: 16px !important;
+  /* --- DAILY NUTRITION BLUEPRINT (Fully Optimized for Mobile) --- */
+  .macro-architecture-card {
+    padding: 16px 14px !important;
+    border-radius: 8px !important;
   }
 
-  .macro-hero-box h2 {
-    font-size: 32px !important;
+  .macro-architecture-card .card-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    margin-bottom: 14px !important;
   }
 
-  .macro-splits {
+  .card-tag-group {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .macro-cal-badge {
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    padding: 7px 10px !important;
+    background: rgba(203, 237, 62, 0.06) !important;
+    border: 1px solid rgba(203, 237, 62, 0.22) !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+  }
+
+  .macro-splits-grid {
     grid-template-columns: 1fr !important;
     gap: 10px !important;
+    margin: 12px 0 14px !important;
+  }
+
+  .macro-split-card {
+    padding: 12px 14px !important;
+    gap: 8px !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
+  }
+
+  .macro-split-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  .macro-name-tag {
+    font-size: 11px !important;
+    letter-spacing: 0.06em !important;
+  }
+
+  .macro-pct-pill {
+    font-size: 11px !important;
+    padding: 2px 6px !important;
+  }
+
+  .macro-split-grams {
+    font-size: 22px !important;
+    margin: 2px 0 !important;
+  }
+
+  .macro-bar {
+    height: 5px !important;
+    margin: 2px 0 4px !important;
+    border-radius: 99px !important;
+  }
+
+  .macro-split-footer {
+    font-size: 11px !important;
+    color: #8fa597 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+  }
+
+  .macro-ratio-track {
+    height: 8px !important;
+    margin-bottom: 14px !important;
+    border-radius: 99px !important;
+  }
+
+  .nutrition-actions-footer {
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .nutrition-footer-btn {
+    width: 100% !important;
+    padding: 11px 14px !important;
+    font-size: 12px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    min-height: 44px !important;
+    box-sizing: border-box !important;
+    border-radius: 6px !important;
+  }
+
+  /* --- WORKOUT COMMAND CENTER HERO --- */
+  .workout-action-card {
+    padding: 18px 16px !important;
+    border-radius: 8px !important;
+  }
+
+  .action-card-top {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .workout-action-card h3 {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .workout-meta-pills {
+    gap: 6px !important;
+    margin: 8px 0 10px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .meta-pill {
+    font-size: 10px !important;
+    padding: 2px 8px !important;
+  }
+
+  .action-card-desc {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .workout-cta-primary {
+    padding: 12px 16px !important;
+    font-size: 13px !important;
+    min-height: 44px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+  }
+
+  .workout-secondary-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+  }
+
+  .workout-cta-ghost {
+    flex: 1 !important;
+    padding: 10px 8px !important;
+    font-size: 11px !important;
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* --- UNIFIED NUTRITION & METABOLIC DECK --- */
+  .nutrition-deck-card {
+    padding: 16px 14px !important;
+    border-radius: 8px !important;
+  }
+
+  .deck-header {
+    margin-bottom: 12px !important;
+  }
+
+  .deck-nav-pills {
+    gap: 4px !important;
+    padding: 3px !important;
+  }
+
+  .deck-pill-btn {
+    padding: 8px 8px !important;
+    font-size: 11px !important;
+    gap: 6px !important;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+  }
+
+  .deck-pane .card-top {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .deck-pane h4 {
+    font-size: 15px !important;
+  }
+
+  .deck-action-ghost-btn {
+    width: 100% !important;
+    min-height: 42px !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+  }
+
+  /* --- BIOMETRIC MATRIX & BASELINE --- */
+  .baseline-card {
+    padding: 16px 14px !important;
+    border-radius: 8px !important;
+  }
+
+  .baseline-card .card-top {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .baseline-card h3 {
+    font-size: 18px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .metrics-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .baseline-card .metric-box {
+    padding: 10px 12px !important;
+  }
+
+  .lifestyle-chips-row {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .lifestyle-chip {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 8px 12px !important;
+  }
+
+  .chip-k {
+    font-size: 9px !important;
+  }
+
+  .chip-v {
+    font-size: 12px !important;
+  }
+
+  .dash-bmi-bar {
+    padding: 12px 14px !important;
+  }
+
+  .bmi-big-num strong {
+    font-size: 22px !important;
+  }
+
+  .bmi-scale-note {
+    font-size: 11px !important;
+  }
+
+  /* --- PROGRESS CHARTS & TELEMETRY --- */
+  .progress-analytics-section {
+    padding: 16px 14px !important;
   }
 
   .progress-header {
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .progress-title-block h2 {
+    font-size: 20px !important;
+  }
+
+  .progress-subtitle {
+    font-size: 12px !important;
   }
 
   .progress-tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    padding: 3px;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    padding: 3px !important;
+    gap: 4px !important;
+    scrollbar-width: none !important;
+  }
+
+  .progress-tabs::-webkit-scrollbar {
+    display: none !important;
   }
 
   .progress-tab {
-    flex: 1;
-    white-space: nowrap;
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
     padding: 7px 10px !important;
     font-size: 11px !important;
-    text-align: center;
   }
 
   .progress-kpi-grid {
-    grid-template-columns: 1fr 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 8px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .progress-kpi-box {
+    padding: 12px !important;
+  }
+
+  .kpi-label {
+    font-size: 9px !important;
+    margin-bottom: 4px !important;
   }
 
   .kpi-value {
     font-size: 18px !important;
   }
 
-  .metrics-row {
-    grid-template-columns: repeat(2, 1fr) !important;
+  .progress-chart-container {
+    padding: 14px 10px 10px !important;
+  }
+
+  .chart-meta {
+    flex-direction: column !important;
+    align-items: flex-start !important;
     gap: 8px !important;
+    padding: 0 4px !important;
+  }
+
+  .chart-meta-biometrics {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .chart-legend-wrap {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .chart-log-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+  }
+
+  .chart-canvas-box {
+    height: 250px !important;
+  }
+
+  .chart-badge {
+    font-size: 10px !important;
+  }
+
+  .chart-legend {
+    font-size: 10px !important;
+    gap: 10px !important;
+  }
+
+  .weigh-in-log-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+  }
+
+  .weigh-in-log-meta {
+    width: 100% !important;
+    justify-content: space-between !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding-top: 6px !important;
+  }
+
+  /* --- WORKOUT HISTORY CARDS --- */
+  .hc-main {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 14px 14px !important;
+    position: relative !important;
+  }
+
+  .hc-chevron {
+    position: absolute !important;
+    top: 14px !important;
+    right: 14px !important;
+  }
+
+  .hc-stats {
+    width: 100% !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding-top: 10px !important;
+  }
+
+  .hc-stat span {
+    font-size: 8px !important;
+  }
+
+  .hc-stat strong {
+    font-size: 14px !important;
   }
 
   /* --- Focus Mode Workout on Mobile --- */
@@ -7206,7 +7643,45 @@ input[type="text"] {
     min-width: 38px !important;
   }
 
-  /* --- Diet Planner on Mobile --- */
+  /* --- Diet Planner & Pantry on Mobile --- */
+  .pantry-quick-stock-bar {
+    padding: 14px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .quick-stock-actions {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .dropdown-action-cluster {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+  }
+
+  .pantry-staples-select {
+    flex: 1 !important;
+    width: auto !important;
+    font-size: 12px !important;
+  }
+
+  .pantry-add-staple-btn {
+    flex-shrink: 0 !important;
+    padding: 8px 12px !important;
+  }
+
+  .pantry-ghost-action-btn.kit,
+  .pantry-toggle-grid-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
   .diet-tab-bar,
   .cheat-tab-bar {
     overflow-x: auto !important;
@@ -7215,6 +7690,12 @@ input[type="text"] {
     padding: 4px !important;
     gap: 4px !important;
     width: 100%;
+    scrollbar-width: none !important;
+  }
+
+  .diet-tab-bar::-webkit-scrollbar,
+  .cheat-tab-bar::-webkit-scrollbar {
+    display: none !important;
   }
 
   .diet-tab-btn,
@@ -7238,6 +7719,22 @@ input[type="text"] {
     grid-template-columns: 1fr !important;
   }
 
+  .rebalance-active-banner {
+    padding: 16px 14px !important;
+  }
+
+  .rebalance-banner-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .rebalance-complete-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 42px !important;
+  }
+
   /* --- Modals Responsive Fitting --- */
   .picker-modal,
   .end-confirm-modal,
@@ -7251,10 +7748,41 @@ input[type="text"] {
   }
 }
 
-/* Extra Small Phones (<= 440px) */
-@media (max-width: 440px) {
+/* Extra Small Phones (<= 480px) */
+@media (max-width: 480px) {
   .dashboard-hud-ribbon {
     grid-template-columns: 1fr !important;
+  }
+
+  .welcome-status-chips {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .status-chip {
+    padding: 6px 4px !important;
+  }
+
+  .status-chip-label {
+    font-size: 8px !important;
+  }
+
+  .status-chip-val {
+    font-size: 11px !important;
+  }
+
+  .workout-secondary-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .deck-nav-pills {
+    flex-direction: column !important;
+  }
+
+  .deck-pill-btn {
+    width: 100% !important;
+    justify-content: center !important;
   }
 
   .pantry-stat-grid,
@@ -7264,6 +7792,15 @@ input[type="text"] {
 
   .progress-kpi-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .diet-form-row {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .nav-live-indicator {
+    display: none !important;
   }
 
   .nav-brand span:first-child {
