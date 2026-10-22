@@ -66,9 +66,9 @@ export default function RegisterPage() {
             setTimeout(() => { navigate('/onboarding'); }, 1000);
         } catch (err: any) {
             if (!err.response) {
-                setError('Cannot connect to server (http://localhost:8000). Please make sure the FastAPI backend is running.');
+                setError('Cloud server is waking up (takes ~30s on first visit). Please tap Create account again in a few seconds!');
             } else if (err.response.status === 500) {
-                setError('Database connection error. Ensure PostgreSQL is running and run "alembic upgrade head" in the backend.');
+                setError('Database connection error. Please try again shortly.');
             } else {
                 setError(err.response?.data?.detail || 'Registration failed. Please try again.');
             }

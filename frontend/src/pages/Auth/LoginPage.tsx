@@ -81,9 +81,9 @@ export default function LoginPage() {
             
         } catch (err: any) {
             if (!err.response) {
-                setError('Cannot connect to server. Please ensure the backend is running.');
+                setError('Cloud server is waking up (takes ~30s on first visit). Please tap Sign in again in a few seconds!');
             } else if (err.response.status === 500) {
-                setError('Database connection error. Ensure PostgreSQL is running.');
+                setError('Database connection error. Please try again shortly.');
             } else {
                 setError(err.response?.data?.detail || 'Failed to sign in. Please try again.');
             }
