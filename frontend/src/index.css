@@ -6845,3 +6845,428 @@ input[type="text"] {
 }
 
 
+
+/* ========================================================
+   COMPREHENSIVE MOBILE & CROSS-DEVICE OPTIMIZATIONS (2026)
+   Native App Feel for Phones (<= 768px) + Desktop Excellence
+   ======================================================== */
+
+/* Mobile Bottom Navigation Bar (Hidden on desktop, active on phones) */
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Show Mobile Bottom Bar */
+  .mobile-bottom-nav {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: rgba(12, 24, 19, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.45);
+    padding-bottom: env(safe-area-inset-bottom, 6px);
+  }
+
+  .mobile-bottom-nav-inner {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    max-width: 500px;
+    margin: 0 auto;
+    height: 60px;
+    align-items: center;
+  }
+
+  .mobile-nav-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: #8fa597;
+    text-decoration: none;
+    font: 500 10px "DM Mono", monospace;
+    transition: all 0.15s ease;
+    padding: 6px 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-nav-tab:active {
+    transform: scale(0.92);
+  }
+
+  .mobile-nav-tab.active {
+    color: #cbed3e;
+    font-weight: 700;
+  }
+
+  .mobile-nav-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  .mobile-nav-tab.active .mobile-nav-icon-wrap svg {
+    stroke: #cbed3e;
+    filter: drop-shadow(0 0 6px rgba(203, 237, 62, 0.5));
+  }
+
+  .mobile-nav-active-dot {
+    position: absolute;
+    bottom: -3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #cbed3e;
+    box-shadow: 0 0 6px #cbed3e;
+  }
+
+  .mobile-nav-label {
+    letter-spacing: 0.04em;
+    font-size: 10px;
+  }
+
+  /* --- Top Navbars Responsive Simplification --- */
+  .nav-links-menu {
+    display: none !important;
+  }
+
+  .nav-edition {
+    display: none !important;
+  }
+
+  .dashboard-nav,
+  .diet-nav,
+  .cheat-nav,
+  .history-nav {
+    padding: 10px 16px !important;
+    gap: 10px;
+  }
+
+  .nav-brand {
+    gap: 10px;
+  }
+
+  .nav-user-actions {
+    gap: 8px;
+  }
+
+  .nav-ghost-btn {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+  }
+
+  .nav-logout-btn {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+  }
+
+  /* --- Main Viewport Spacing (Leaves room for Bottom Nav) --- */
+  .dashboard-main,
+  .diet-main,
+  .cheat-main,
+  .history-main {
+    padding: 16px 14px 96px !important;
+  }
+
+  /* --- Welcome Banners & Header Inputs --- */
+  .dashboard-welcome-bar {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .dashboard-welcome-bar h1,
+  .diet-header-block h1,
+  .cheat-header-block h1,
+  .history-header h1 {
+    font-size: 26px !important;
+    line-height: 1.2 !important;
+  }
+
+  .dashboard-welcome-bar .intro,
+  .diet-header-block .intro,
+  .cheat-header-block .intro {
+    font-size: 13px !important;
+  }
+
+  .welcome-actions,
+  .hero-cta-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* --- HUD Ribbons on Mobile --- */
+  .dashboard-hud-ribbon {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .hud-card {
+    padding: 12px 14px !important;
+  }
+
+  .hud-metric strong {
+    font-size: 20px !important;
+  }
+
+  .hud-sub {
+    font-size: 11px !important;
+  }
+
+  /* --- 2-Column Grids Collapse Gracefully --- */
+  .dashboard-content-layout {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .macro-dashboard-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .macro-hero-box h2 {
+    font-size: 32px !important;
+  }
+
+  .macro-splits {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .progress-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .progress-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding: 3px;
+  }
+
+  .progress-tab {
+    flex: 1;
+    white-space: nowrap;
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+    text-align: center;
+  }
+
+  .progress-kpi-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .kpi-value {
+    font-size: 18px !important;
+  }
+
+  .metrics-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  /* --- Focus Mode Workout on Mobile --- */
+  .workout-shell {
+    height: 100svh;
+  }
+
+  .workout-header {
+    padding: 8px 12px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .wh-left {
+    gap: 8px !important;
+  }
+
+  .wh-title-input {
+    font-size: 15px !important;
+    max-width: 140px !important;
+  }
+
+  .wh-tag-input {
+    display: none !important;
+  }
+
+  .wh-telemetry {
+    gap: 6px !important;
+  }
+
+  .wh-stat {
+    padding: 4px 8px !important;
+  }
+
+  .wh-stat strong {
+    font-size: 13px !important;
+  }
+
+  .wh-stat span {
+    font-size: 9px !important;
+  }
+
+  .wh-end-btn {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .workout-body {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .workout-blueprint {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(11, 22, 18, 0.98) !important;
+    flex-shrink: 0;
+  }
+
+  .bp-label {
+    display: none !important;
+  }
+
+  .bp-list {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 6px !important;
+  }
+
+  .bp-item {
+    flex-shrink: 0;
+    padding: 6px 10px !important;
+    border-radius: 6px !important;
+  }
+
+  .bp-item span:first-child {
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px !important;
+  }
+
+  .bp-add-btn {
+    flex-shrink: 0;
+    padding: 6px 12px !important;
+    white-space: nowrap;
+  }
+
+  .workout-action-zone {
+    padding: 14px 12px 100px !important;
+    overflow-y: visible !important;
+  }
+
+  .exercise-log-card {
+    margin-bottom: 16px !important;
+  }
+
+  .set-row {
+    padding: 8px 4px !important;
+    gap: 6px !important;
+  }
+
+  .set-num {
+    width: 24px !important;
+    font-size: 12px !important;
+  }
+
+  .set-input {
+    width: 60px !important;
+    padding: 8px 4px !important;
+    font-size: 14px !important;
+  }
+
+  .set-check-btn {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+  }
+
+  /* --- Diet Planner on Mobile --- */
+  .diet-tab-bar,
+  .cheat-tab-bar {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    padding: 4px !important;
+    gap: 4px !important;
+    width: 100%;
+  }
+
+  .diet-tab-btn,
+  .cheat-tab-btn {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    padding: 8px 12px !important;
+    font-size: 11px !important;
+  }
+
+  .pantry-stat-grid,
+  .cheat-hud-ribbon {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .diet-inventory-grid,
+  .diet-recommendations-grid,
+  .meal-plan-display-grid,
+  .templates-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* --- Modals Responsive Fitting --- */
+  .picker-modal,
+  .end-confirm-modal,
+  .diet-modal-box {
+    width: 95% !important;
+    max-height: 88vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 18px 14px !important;
+    margin: auto;
+  }
+}
+
+/* Extra Small Phones (<= 440px) */
+@media (max-width: 440px) {
+  .dashboard-hud-ribbon {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pantry-stat-grid,
+  .cheat-hud-ribbon {
+    grid-template-columns: 1fr !important;
+  }
+
+  .progress-kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .nav-brand span:first-child {
+    font-size: 14px;
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import FlowingLinesBackground from './components/FlowingLinesBackground';
+import MobileBottomNav from './components/MobileBottomNav';
 import LoginPage from './pages/Auth/LoginPage';
 import RegisterPage from './pages/Auth/RegisterPage';
 import OnboardingPage from './pages/Onboarding';
@@ -76,11 +77,12 @@ function App() {
           }
         />
         <Route path="*" element={<Navigate to="/login" replace />} />
-
       </Routes>
+
+      {/* Modern Mobile Bottom Navigation Bar (Active on phones <= 768px, hidden on desktop) */}
+      <MobileBottomNav />
     </Router>
   );
 }
 
 export default App;
-
