@@ -7643,12 +7643,24 @@ input[type="text"] {
     min-width: 38px !important;
   }
 
-  /* --- Diet Planner & Pantry on Mobile --- */
+  /* --- DIET PLANNER & PANTRY ON MOBILE (<= 768px) --- */
   .pantry-quick-stock-bar {
-    padding: 14px !important;
+    padding: 14px 12px !important;
     flex-direction: column !important;
     align-items: stretch !important;
     gap: 12px !important;
+  }
+
+  .quick-stock-left {
+    gap: 10px !important;
+  }
+
+  .quick-stock-title {
+    font-size: 13px !important;
+  }
+
+  .quick-stock-sub {
+    font-size: 11px !important;
   }
 
   .quick-stock-actions {
@@ -7661,27 +7673,639 @@ input[type="text"] {
   .dropdown-action-cluster {
     width: 100% !important;
     display: flex !important;
+    flex-direction: row !important;
     gap: 8px !important;
   }
 
   .pantry-staples-select {
     flex: 1 !important;
     width: auto !important;
+    min-width: 0 !important;
     font-size: 12px !important;
+    padding: 8px 24px 8px 10px !important;
   }
 
   .pantry-add-staple-btn {
     flex-shrink: 0 !important;
     padding: 8px 12px !important;
+    font-size: 11px !important;
   }
 
+  .pantry-ghost-action-btn,
   .pantry-ghost-action-btn.kit,
   .pantry-toggle-grid-btn {
     width: 100% !important;
     justify-content: center !important;
     text-align: center !important;
+    padding: 9px 12px !important;
+    font-size: 12px !important;
+    min-height: 40px !important;
+    box-sizing: border-box !important;
   }
 
+  /* Pantry Inventory Toolbar */
+  .pantry-inventory-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 14px 12px !important;
+  }
+
+  .pantry-toolbar-meta {
+    gap: 2px !important;
+  }
+
+  .inventory-section-title {
+    font-size: 15px !important;
+  }
+
+  .inventory-section-sub {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+  }
+
+  .pantry-toolbar-controls {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  .pantry-dropdown-cluster {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .pantry-dropdown-cluster .dropdown-field-label {
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  .pantry-category-select {
+    flex: 1 !important;
+    font-size: 12px !important;
+    padding: 7px 24px 7px 10px !important;
+  }
+
+  .pantry-view-mode-toggle {
+    display: flex !important;
+    gap: 4px !important;
+  }
+
+  .view-toggle-btn {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+  }
+
+  .pantry-clear-btn {
+    padding: 6px 12px !important;
+    font-size: 11px !important;
+  }
+
+  /* Pantry Table Rows as Mobile Cards */
+  .pantry-table-header {
+    display: none !important;
+  }
+
+  .pantry-table-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    padding: 14px 12px !important;
+    position: relative !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .ptr-col.ptr-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding-right: 36px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .ptr-item-name {
+    font-size: 14px !important;
+    color: #f1f7ee !important;
+  }
+
+  .ptr-col.ptr-macros {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .macro-chip {
+    font-size: 10px !important;
+    padding: 3px 6px !important;
+    border-radius: 4px !important;
+  }
+
+  .ptr-col.ptr-qty {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding-top: 8px !important;
+  }
+
+  .pantry-table-stepper {
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+
+  .pantry-stepper-btn {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 16px !important;
+  }
+
+  .pantry-stepper-val {
+    font-size: 13px !important;
+    min-width: 80px !important;
+    text-align: center !important;
+  }
+
+  .ptr-col.ptr-action {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+  }
+
+  .pantry-row-del-btn {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 14px !important;
+  }
+
+  /* Pantry Cards Grid on Mobile */
+  .pantry-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .staples-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Tab 2: Deficiency Analysis */
+  .deficiency-callout {
+    padding: 16px 14px !important;
+  }
+
+  .deficiency-callout h3 {
+    font-size: 16px !important;
+  }
+
+  .deficiency-callout p {
+    font-size: 12px !important;
+  }
+
+  .macro-compare-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .macro-compare-card {
+    padding: 12px 10px !important;
+  }
+
+  .macro-compare-lbl {
+    font-size: 10px !important;
+  }
+
+  .macro-compare-target {
+    font-size: 10px !important;
+  }
+
+  .macro-compare-val strong {
+    font-size: 20px !important;
+  }
+
+  .deficiency-findings-card {
+    padding: 16px 14px !important;
+  }
+
+  .deficiency-finding-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    padding: 12px 12px !important;
+  }
+
+  .finding-gap-tag {
+    width: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+  }
+
+  .sug-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .sug-card {
+    padding: 14px 12px !important;
+  }
+
+  .sug-footer {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .sug-add-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    min-height: 42px !important;
+  }
+
+  /* Tab 3: Pantry Meal Plan */
+  .mealplan-action-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+    padding: 18px 14px !important;
+  }
+
+  .mealplan-h {
+    font-size: 18px !important;
+  }
+
+  .mealplan-desc {
+    font-size: 12px !important;
+  }
+
+  .mealplan-gen-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 46px !important;
+    font-size: 13px !important;
+  }
+
+  .mealplan-summary-bar {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 14px 14px !important;
+  }
+
+  .mealplan-sum-stats {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+  }
+
+  .meals-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .meal-card {
+    padding: 16px 14px !important;
+  }
+
+  .meal-top {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .meal-title {
+    font-size: 16px !important;
+  }
+
+  .meal-recipe-box {
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .meal-footer {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding-top: 10px !important;
+  }
+
+  .meal-macro-badges {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    gap: 4px !important;
+    align-items: center !important;
+  }
+
+  .meal-unlock-shelf {
+    padding: 16px 14px !important;
+  }
+
+  .meal-unlock-chips {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  /* Tab 4: Shopping List */
+  .shopping-add-card {
+    padding: 14px 12px !important;
+  }
+
+  .shopping-form {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .shop-input-text {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .shop-input-num {
+    width: 100% !important;
+  }
+
+  .shop-select {
+    width: 100% !important;
+  }
+
+  .shop-submit-btn {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-height: 44px !important;
+    justify-content: center !important;
+  }
+
+  .shopping-item-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 14px 14px !important;
+  }
+
+  .shop-item-left {
+    gap: 10px !important;
+  }
+
+  .shop-item-right {
+    display: flex !important;
+    gap: 8px !important;
+    width: 100% !important;
+    justify-content: space-between !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+    padding-top: 10px !important;
+  }
+
+  .shop-transfer-btn {
+    flex: 1 !important;
+    justify-content: center !important;
+    min-height: 40px !important;
+    font-size: 12px !important;
+  }
+
+  .shop-del-btn {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  /* --- CHEAT MEAL TRACKER ON MOBILE (<= 768px) --- */
+  .cheat-hud-ribbon {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .cheat-hud-cell {
+    padding: 12px 12px !important;
+  }
+
+  .cheat-hud-cell-label {
+    font-size: 9px !important;
+  }
+
+  .cheat-hud-cell-val strong {
+    font-size: 18px !important;
+  }
+
+  .cheat-hud-cell-sub {
+    font-size: 10px !important;
+  }
+
+  .rebalance-active-banner {
+    padding: 16px 14px !important;
+    border-radius: 8px !important;
+  }
+
+  .rebalance-banner-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .rebalance-banner-h {
+    font-size: 16px !important;
+    line-height: 1.3 !important;
+  }
+
+  .rebalance-banner-sub {
+    font-size: 11px !important;
+  }
+
+  .rebalance-complete-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    font-size: 12px !important;
+  }
+
+  .rebalance-targets-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .rebalance-target-box {
+    padding: 10px 12px !important;
+  }
+
+  .rebalance-target-val {
+    font-size: 18px !important;
+  }
+
+  .rebalance-science-toggle {
+    padding: 8px 10px !important;
+    font-size: 11px !important;
+    width: 100% !important;
+  }
+
+  /* Cheat Quick-Stock Bar & Macro Preview */
+  .quick-stock-actions .dropdown-action-cluster {
+    flex-direction: column !important;
+    width: 100% !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .quick-stock-actions .pantry-staples-select {
+    width: 100% !important;
+  }
+
+  .cheat-macro-preview-chips {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    width: 100% !important;
+  }
+
+  .cheat-macro-preview-chips .macro-chip {
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 4px 2px !important;
+    font-size: 10px !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .quick-stock-actions .pantry-add-staple-btn {
+    width: 100% !important;
+    min-height: 42px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    font-size: 12px !important;
+  }
+
+  /* Cheat Cards Grid & Category Pills */
+  .cheat-cat-chips-row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    padding-bottom: 6px !important;
+    scrollbar-width: none !important;
+  }
+
+  .cheat-cat-chips-row::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .cheat-cat-pill-btn {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    font-size: 11px !important;
+    padding: 5px 12px !important;
+  }
+
+  .cheat-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .cheat-card {
+    padding: 14px 12px !important;
+  }
+
+  .cheat-card-macros {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    padding: 6px 4px !important;
+  }
+
+  .cheat-macro-val {
+    font-size: 11px !important;
+  }
+
+  .cheat-log-btn {
+    min-height: 42px !important;
+    font-size: 12px !important;
+  }
+
+  /* Indulgence History Archive Table */
+  .cheat-history-table-header {
+    display: none !important;
+  }
+
+  .cheat-history-table-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 12px 14px !important;
+    position: relative !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .cheat-history-table-row .ptr-col.ptr-action {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+  }
+
+  .cheat-history-table-row .ptr-item {
+    padding-right: 32px !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .cheat-history-table-row .ptr-macros {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    width: 100% !important;
+  }
+
+  .cheat-history-table-row .ptr-macros .macro-chip {
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 3px 2px !important;
+    font-size: 10px !important;
+    min-width: 0 !important;
+  }
+
+  .feeling-chips {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  .feeling-chip {
+    font-size: 11px !important;
+    padding: 4px 8px !important;
+  }
+
+  .strategy-picker .strategy-option {
+    padding: 10px 12px !important;
+  }
+
+  .strategy-title {
+    font-size: 13px !important;
+  }
+
+  .strategy-desc {
+    font-size: 11px !important;
+  }
+
+  /* Tab Bars */
   .diet-tab-bar,
   .cheat-tab-bar {
     overflow-x: auto !important;
@@ -7706,8 +8330,7 @@ input[type="text"] {
     font-size: 11px !important;
   }
 
-  .pantry-stat-grid,
-  .cheat-hud-ribbon {
+  .pantry-stat-grid {
     grid-template-columns: 1fr 1fr !important;
     gap: 10px !important;
   }
@@ -7717,22 +8340,6 @@ input[type="text"] {
   .meal-plan-display-grid,
   .templates-grid {
     grid-template-columns: 1fr !important;
-  }
-
-  .rebalance-active-banner {
-    padding: 16px 14px !important;
-  }
-
-  .rebalance-banner-top {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 10px !important;
-  }
-
-  .rebalance-complete-btn {
-    width: 100% !important;
-    justify-content: center !important;
-    min-height: 42px !important;
   }
 
   /* --- Modals Responsive Fitting --- */
@@ -7787,6 +8394,10 @@ input[type="text"] {
 
   .pantry-stat-grid,
   .cheat-hud-ribbon {
+    grid-template-columns: 1fr !important;
+  }
+
+  .macro-compare-grid {
     grid-template-columns: 1fr !important;
   }
 
