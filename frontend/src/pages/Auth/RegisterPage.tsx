@@ -4,6 +4,7 @@ import api from '../../services/api';
 import Logo from '../../components/Logo';
 import StudioPanel from '../../components/StudioPanel';
 import { EyeIcon, GoogleIcon, SuccessCheckmark } from '../../components/icons';
+import { triggerGoogleAuth } from '../../services/googleAuth';
 
 export default function RegisterPage() {
     const [firstName, setFirstName] = useState('');
@@ -14,9 +15,37 @@ export default function RegisterPage() {
     const [agree, setAgree] = useState(false);
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
     const navigate = useNavigate();
+
+    const handleGoogleSignUp = () => {
+        setError('');
+        triggerGoogleAuth(
+            async (token: string) => {
+                setSubmitted(true);
+                try {
+                    const statusRes = await api.get('/profile/status', {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    setTimeout(() => {
+                        if (statusRes.data?.has_profile) {
+                            navigate('/dashboard');
+                        } else {
+                            navigate('/onboarding');
+                        }
+                    }, 800);
+                } catch {
+                    setTimeout(() => {
+                        navigate('/onboarding');
+                    }, 800);
+                }
+            },
+            (errorMsg) => setError(errorMsg),
+            setIsGoogleLoading
+        );
+    };
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -64,8 +93,14 @@ export default function RegisterPage() {
                     <h1 className="stagger stagger-2">Start your sync.</h1>
                     <p className="intro stagger stagger-3">Ninety seconds to set up. A lifetime of momentum.</p>
 
-                    <button type="button" className="google-button stagger stagger-4">
-                        <GoogleIcon /> Sign up with Google
+                    <button 
+                        type="button" 
+                        className="google-button stagger stagger-4"
+                        onClick={handleGoogleSignUp}
+                        disabled={isLoading || isGoogleLoading}
+                    >
+                        <GoogleIcon />
+                        {isGoogleLoading ? 'Connecting to Google...' : 'Sign up with Google'}
                     </button>
 
                     <div className="or stagger stagger-5"><span /> OR SIGN UP WITH EMAIL <span /></div>

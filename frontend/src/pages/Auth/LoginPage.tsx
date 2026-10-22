@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../services/api';
 import Logo from '../../components/Logo';
 import StudioPanel from '../../components/StudioPanel';
 import { EyeIcon, GoogleIcon, SuccessCheckmark } from '../../components/icons';
+import { triggerGoogleAuth, initGoogleOneTap } from '../../services/googleAuth';
 
 /* ──────────────────────────────────────────
    Main Login Page Component
@@ -13,11 +14,55 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [remember, setRemember] = useState(true);
     const [submitted, setSubmitted] = useState(false);
 
     const navigate = useNavigate();
+
+    const handlePostLogin = async (token: string) => {
+        setSubmitted(true);
+        // Query profile status to determine routing
+        try {
+            const statusRes = await api.get('/profile/status', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            setTimeout(() => {
+                if (statusRes.data?.has_profile) {
+                    navigate('/dashboard');
+                } else {
+                    navigate('/onboarding');
+                }
+            }, 800);
+        } catch {
+            // Fallback to onboarding if status check fails
+            setTimeout(() => {
+                navigate('/onboarding');
+            }, 800);
+        }
+    };
+
+    useEffect(() => {
+        // Optional Google One Tap prompt
+        const timer = setTimeout(() => {
+            initGoogleOneTap(
+                (token) => handlePostLogin(token),
+                () => {}
+            );
+        }, 1200);
+        return () => clearTimeout(timer);
+    }, []);
+
+    const handleGoogleSignIn = () => {
+        setError('');
+        triggerGoogleAuth(
+            (token) => handlePostLogin(token),
+            (errorMsg) => setError(errorMsg),
+            setIsGoogleLoading
+        );
+    };
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,33 +77,13 @@ export default function LoginPage() {
 
             const token = response.data.access_token;
             localStorage.setItem('access_token', token);
-            setSubmitted(true);
-
-            // Query profile status to determine routing
-            try {
-                const statusRes = await api.get('/profile/status', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                
-                setTimeout(() => {
-                    if (statusRes.data?.has_profile) {
-                        navigate('/dashboard');
-                    } else {
-                        navigate('/onboarding');
-                    }
-                }, 800);
-            } catch {
-                // Fallback to onboarding if status check fails
-                setTimeout(() => {
-                    navigate('/onboarding');
-                }, 800);
-            }
+            await handlePostLogin(token);
             
         } catch (err: any) {
             if (!err.response) {
-                setError('Cannot connect to server (http://localhost:8000). Please make sure the FastAPI backend is running.');
+                setError('Cannot connect to server. Please ensure the backend is running.');
             } else if (err.response.status === 500) {
-                setError('Database connection error. Ensure PostgreSQL is running and run "alembic upgrade head" in the backend.');
+                setError('Database connection error. Ensure PostgreSQL is running.');
             } else {
                 setError(err.response?.data?.detail || 'Failed to sign in. Please try again.');
             }
@@ -96,9 +121,11 @@ export default function LoginPage() {
                     <button
                         type="button"
                         className="google-button stagger stagger-4"
+                        onClick={handleGoogleSignIn}
+                        disabled={isLoading || isGoogleLoading}
                     >
                         <GoogleIcon />
-                        Continue with Google
+                        {isGoogleLoading ? 'Connecting to Google...' : 'Continue with Google'}
                     </button>
 
                     {/* Divider */}
