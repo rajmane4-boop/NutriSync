@@ -6,6 +6,14 @@ NutriSync is a high-performance, full-stack fitness and nutrition synchronizatio
 
 ---
 
+## 🌐 Live Cloud Deployment
+
+| 🚀 Live Web App | 📱 Scan to Open on Mobile |
+| :--- | :---: |
+| **Direct URL:** [https://nutrisync-live-seven.vercel.app](https://nutrisync-live-seven.vercel.app)<br><br>• **Frontend:** Vercel Global Edge CDN<br>• **Backend:** FastAPI on Render Cloud<br>• **Database:** Neon Serverless PostgreSQL<br>• **Authentication:** Google OAuth2 + JWT Bearer | <img src="docs/nutrisync_qr_code.png" alt="NutriSync Live QR Code" width="140" /> |
+
+---
+
 ## 🏗️ Architecture Overview
 
 ```
