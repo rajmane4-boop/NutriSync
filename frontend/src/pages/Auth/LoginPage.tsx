@@ -15,11 +15,25 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+    const [isColdStarting, setIsColdStarting] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [remember, setRemember] = useState(true);
     const [submitted, setSubmitted] = useState(false);
 
     const navigate = useNavigate();
+
+    // Detect if network request is taking > 2.8s (Render cold start)
+    useEffect(() => {
+        let timer: any;
+        if (isLoading || isGoogleLoading) {
+            timer = setTimeout(() => {
+                setIsColdStarting(true);
+            }, 2800);
+        } else {
+            setIsColdStarting(false);
+        }
+        return () => clearTimeout(timer);
+    }, [isLoading, isGoogleLoading]);
 
     const handlePostLogin = async (token: string) => {
         setSubmitted(true);
@@ -125,8 +139,20 @@ export default function LoginPage() {
                         disabled={isLoading || isGoogleLoading}
                     >
                         <GoogleIcon />
-                        {isGoogleLoading ? 'Connecting to Google...' : 'Continue with Google'}
+                        {isGoogleLoading
+                            ? (isColdStarting ? 'Waking up cloud server...' : 'Connecting to Google...')
+                            : 'Continue with Google'}
                     </button>
+
+                    {/* Cold start reassurance banner */}
+                    {isColdStarting && (
+                        <div className="cold-start-banner" role="status">
+                            <span className="cold-start-dot" />
+                            <span>
+                                <strong>Connecting to cloud server:</strong> Free-tier backend is spinning up (~15–20s initial boot). Almost there...
+                            </span>
+                        </div>
+                    )}
 
                     {/* Divider */}
                     <div className="or stagger stagger-5">
@@ -181,7 +207,9 @@ export default function LoginPage() {
                             </label>
 
                             <button className="submit-button" type="submit" disabled={isLoading}>
-                                {isLoading ? 'Signing in...' : <>Sign in <span>→</span></>}
+                                {isLoading 
+                                    ? (isColdStarting ? 'Waking up cloud server...' : 'Signing in...') 
+                                    : <>Sign in <span>→</span></>}
                             </button>
                         </div>
 

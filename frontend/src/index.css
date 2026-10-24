@@ -8418,3 +8418,32 @@ input[type="text"] {
     font-size: 14px;
   }
 }
+
+/* ──────────────────────────────────────────
+   Cold Start Cloud Reassurance Banner
+   ────────────────────────────────────────── */
+.cold-start-banner {
+  margin: 14px 0 8px;
+  padding: 10px 14px;
+  background: rgba(203, 237, 62, 0.08);
+  border: 1px solid rgba(203, 237, 62, 0.28);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #d4e790;
+  text-align: left;
+}
+
+.cold-start-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #cbed3e;
+  box-shadow: 0 0 8px #cbed3e;
+  flex-shrink: 0;
+  animation: pulse-dot 1.8s infinite ease-in-out;
+}
+

@@ -16,9 +16,23 @@ export default function RegisterPage() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+    const [isColdStarting, setIsColdStarting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
 
     const navigate = useNavigate();
+
+    // Detect if network request is taking > 2.8s (Render cold start)
+    React.useEffect(() => {
+        let timer: any;
+        if (isLoading || isGoogleLoading) {
+            timer = setTimeout(() => {
+                setIsColdStarting(true);
+            }, 2800);
+        } else {
+            setIsColdStarting(false);
+        }
+        return () => clearTimeout(timer);
+    }, [isLoading, isGoogleLoading]);
 
     const handleGoogleSignUp = () => {
         setError('');
@@ -100,8 +114,20 @@ export default function RegisterPage() {
                         disabled={isLoading || isGoogleLoading}
                     >
                         <GoogleIcon />
-                        {isGoogleLoading ? 'Connecting to Google...' : 'Sign up with Google'}
+                        {isGoogleLoading 
+                            ? (isColdStarting ? 'Waking up cloud server...' : 'Connecting to Google...') 
+                            : 'Sign up with Google'}
                     </button>
+
+                    {/* Cold start reassurance banner */}
+                    {isColdStarting && (
+                        <div className="cold-start-banner" role="status">
+                            <span className="cold-start-dot" />
+                            <span>
+                                <strong>Connecting to cloud server:</strong> Free-tier backend is spinning up (~15–20s initial boot). Almost there...
+                            </span>
+                        </div>
+                    )}
 
                     <div className="or stagger stagger-5"><span /> OR SIGN UP WITH EMAIL <span /></div>
 
@@ -131,7 +157,9 @@ export default function RegisterPage() {
                         </label>
 
                         <button className="submit-button stagger stagger-8" type="submit" disabled={isLoading || !agree}>
-                            {isLoading ? 'Creating account...' : <>Create account <span>&rarr;</span></>}
+                            {isLoading 
+                                ? (isColdStarting ? 'Waking up cloud server...' : 'Creating account...') 
+                                : <>Create account <span>&rarr;</span></>}
                         </button>
 
                         {submitted && (

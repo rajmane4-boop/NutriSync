@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import api from './services/api';
 import FlowingLinesBackground from './components/FlowingLinesBackground';
 import MobileBottomNav from './components/MobileBottomNav';
 import LoginPage from './pages/Auth/LoginPage';
@@ -21,6 +22,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function App() {
+  useEffect(() => {
+    // Proactively pre-warm the cloud backend (Render) on initial page visit
+    api.get('/health').catch(() => {});
+  }, []);
+
   return (
     <Router>
       {/* Global Smooth Flowing Streamlines Ambient Background */}
